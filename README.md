@@ -5,3 +5,4 @@ Name and role of the people in the project:
 Khushi Suman : Frontend Developer
 Harsh Singh : Project Manager
 Krinal Kalpesh Akbari : Backend Developer
+Swaraj Bhalerao : Backend Developer

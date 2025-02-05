@@ -3,3 +3,4 @@ This is a repository for the course SSW 695. This repository contains code for t
 
 Name and role of the people in the project:
 Khushi Suman : Frontend Developer
+Harsh Singh : Project Manager

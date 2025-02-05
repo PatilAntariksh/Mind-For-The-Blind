@@ -6,3 +6,4 @@ Khushi Suman : Frontend Developer
 Harsh Singh : Project Manager
 Krinal Kalpesh Akbari : Backend Developer
 Swaraj Bhalerao : Backend Developer
+Akhil Krishna Guggilam : Frontend Developer

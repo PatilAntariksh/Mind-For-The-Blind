@@ -1,24 +1,41 @@
-name: Flutter CI/CD Pipeline
+name: Flutter CI/CD
 
 on:
   push:
     branches:
-      - main  # Runs the workflow on the main branch
+      - main
+      - function  
+  pull_request:
+    branches:
+      - main
+      - function
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
-      - name: Setup Flutter
+      - name: Set up Flutter
         uses: subosito/flutter-action@v2
         with:
-          flutter-version: '3.13.0'
+          flutter-version: '3.29.0'  
 
       - name: Install Dependencies
         run: flutter pub get
 
+      - name: Run Analyzer
+        run: flutter analyze
+
       - name: Run Tests
         run: flutter test
+
+      - name: Build APK
+        run: flutter build apk
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: app-release.apk
+          path: build/app/outputs/flutter-apk/app-release.apk

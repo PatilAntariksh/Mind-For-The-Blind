@@ -21,13 +21,19 @@ class MockFirebasePlatform extends FirebasePlatform {
     String? name,
     FirebaseOptions? options,
   }) async {
-    return MockFirebaseAppPlatform();
+    return MockFirebaseAppPlatform(name ?? 'mockApp', options);
   }
 }
 
-/// Mock Firebase App Platform (ensures correct return type)
+/// Mock Firebase App Platform (Ensures correct return type)
 class MockFirebaseAppPlatform extends FirebaseAppPlatform {
-  MockFirebaseAppPlatform() : super('mockApp');
+  MockFirebaseAppPlatform(String name, FirebaseOptions? options)
+      : super(name, options ?? const FirebaseOptions(
+          apiKey: "fakeApiKey",
+          appId: "fakeAppId",
+          messagingSenderId: "fakeSenderId",
+          projectId: "fakeProjectId",
+        ));
 
   @override
   FirebaseOptions get options => FirebaseOptions(

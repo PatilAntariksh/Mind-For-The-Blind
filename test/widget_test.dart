@@ -7,11 +7,11 @@ import 'package:mind_for_the_blind/screens/welcome_page.dart';
 import 'package:mind_for_the_blind/screens/signup_page.dart';
 import 'package:mind_for_the_blind/screens/login_page.dart';
 import 'package:mind_for_the_blind/screens/Mode_selection.dart';
+import 'firebase_mock.dart';  // Import the mock
 
 void main() {
   setUpAll(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp(); // Ensures Firebase initializes before tests
+    await initializeMockFirebase(); // Use mocked Firebase
   });
 
   testWidgets("App starts at IntroPage and navigates to WelcomePage", (WidgetTester tester) async {
@@ -20,10 +20,10 @@ void main() {
     // Verify that the IntroPage is shown initially
     expect(find.byType(IntroPage), findsOneWidget);
 
-    // Wait for navigation to WelcomePage (simulate 5-second delay)
-    await tester.pumpAndSettle(Duration(seconds: 6));
+    // Navigate
+    await tester.pumpAndSettle();
 
-    // Verify that WelcomePage appears after IntroPage
+    // Verify that WelcomePage appears
     expect(find.byType(WelcomePage), findsOneWidget);
   });
 
@@ -36,11 +36,9 @@ void main() {
       },
     ));
 
-    // Find the 'New User' button and tap it
     await tester.tap(find.text("New User"));
     await tester.pumpAndSettle();
 
-    // Verify we navigated to SignUpPage
     expect(find.byType(SignUpPage), findsOneWidget);
   });
 
@@ -53,11 +51,9 @@ void main() {
       },
     ));
 
-    // Find the 'Login' button and tap it
     await tester.tap(find.text("Login"));
     await tester.pumpAndSettle();
 
-    // Verify we navigated to LoginPage
     expect(find.byType(LoginPage), findsOneWidget);
   });
 
@@ -66,7 +62,6 @@ void main() {
       home: ModeSelection(),
     ));
 
-    // Verify "Coming Soon" text is present
     expect(find.text("Coming Soon..."), findsOneWidget);
   });
 }

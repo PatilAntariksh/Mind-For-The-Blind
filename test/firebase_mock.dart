@@ -4,8 +4,8 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-// Generate mock Firebase dependencies
-@GenerateMocks([FirebaseApp, Firebase])
+// Use `customMocks` to rename MockFirebaseApp to MockFirebaseAppInstance
+@GenerateMocks([], customMocks: [MockSpec<FirebaseApp>(as: #MockFirebaseAppInstance)])
 void setupFirebaseMocks() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
@@ -22,9 +22,9 @@ Future<void> initializeMockFirebase() async {
 class MockFirebasePlatform extends FirebasePlatform {
   @override
   Future<FirebaseApp> initializeApp({String? name, FirebaseOptions? options}) async {
-    return MockFirebaseApp();
+    return MockFirebaseAppInstance(); // Use the new unique name
   }
 }
 
-// Mock Firebase App
-class MockFirebaseApp extends Mock implements FirebaseApp {}
+// Mock Firebase App (renamed to avoid conflict)
+class MockFirebaseAppInstance extends Mock implements FirebaseApp {}

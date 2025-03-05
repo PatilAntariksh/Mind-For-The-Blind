@@ -5,7 +5,7 @@ import 'package:flutter_test/flutter_test.dart';
 void setupFirebaseMocks() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  // Manually set up the Firebase mock platform
+  // Register the mock Firebase platform
   FirebasePlatform.instance = MockFirebasePlatform();
 }
 
@@ -14,13 +14,26 @@ Future<void> initializeMockFirebase() async {
   await Firebase.initializeApp();
 }
 
-/// Mock implementation for Firebase Core
+/// Mock Firebase Platform Implementation
 class MockFirebasePlatform extends FirebasePlatform {
   @override
-  Future<FirebaseApp> initializeApp({String? name, FirebaseOptions? options}) async {
-    return MockFirebaseApp();
+  Future<FirebaseAppPlatform> initializeApp({
+    String? name,
+    FirebaseOptions? options,
+  }) async {
+    return MockFirebaseAppPlatform();
   }
 }
 
-/// Manually created mock Firebase App (no Mockito auto-generation)
-class MockFirebaseApp extends Fake implements FirebaseApp {}
+/// Mock Firebase App Platform (ensures correct return type)
+class MockFirebaseAppPlatform extends FirebaseAppPlatform {
+  MockFirebaseAppPlatform() : super('mockApp');
+
+  @override
+  FirebaseOptions get options => FirebaseOptions(
+        apiKey: "fakeApiKey",
+        appId: "fakeAppId",
+        messagingSenderId: "fakeSenderId",
+        projectId: "fakeProjectId",
+      );
+}

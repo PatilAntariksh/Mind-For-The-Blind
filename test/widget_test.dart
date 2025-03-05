@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:mind_for_the_blind/main.dart';
 import 'package:mind_for_the_blind/screens/intro_page.dart';
 import 'package:mind_for_the_blind/screens/welcome_page.dart';
@@ -10,10 +12,13 @@ import 'firebase_mock.dart';
 import 'firebase_auth_mock.dart';
 
 void main() {
+  late FirebaseAuth mockAuth;
+  late FirebaseFirestore mockDb;
+
   setUpAll(() async {
     await initializeMockFirebase();
-    mockFirebaseAuth(); // ✅ Properly mock FirebaseAuth before running tests
-  });
+    mockAuth = mockFirebaseAuth(); 
+    mockDb = mockFirestore(); 
 
   testWidgets("App starts at IntroPage and navigates to WelcomePage", (WidgetTester tester) async {
     await tester.pumpWidget(MindForTheBlindApp());

@@ -4,7 +4,7 @@ import 'screens/intro_page.dart';
 import 'screens/welcome_page.dart';
 import 'screens/signup_page.dart';
 import 'screens/login_page.dart';
-import 'screens/Mode_selection.dart';
+import 'screens/mode_selection.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

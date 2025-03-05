@@ -19,6 +19,7 @@ void main() {
     await initializeMockFirebase();
     mockAuth = mockFirebaseAuth(); 
     mockDb = mockFirestore(); 
+  });
 
   testWidgets("App starts at IntroPage and navigates to WelcomePage", (WidgetTester tester) async {
     await tester.pumpWidget(MindForTheBlindApp());

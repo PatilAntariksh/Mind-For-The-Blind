@@ -8,12 +8,6 @@ import 'package:mind_for_the_blind/screens/login_page.dart';
 import 'package:mind_for_the_blind/screens/Mode_selection.dart';
 
 void main() {
-  // Ensure Firebase is initialized before running any tests
-  setUpAll(() async {
-    TestWidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
-  });
-
   testWidgets('App starts at IntroPage and navigates to WelcomePage', (WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(

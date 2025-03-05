@@ -10,10 +10,10 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(CapstoneProjectApp());
+  runApp(MindForTheBlindApp());
 }
 
-class CapstoneProjectApp extends StatelessWidget {
+class MindForTheBlindApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(

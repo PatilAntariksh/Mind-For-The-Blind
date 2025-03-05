@@ -12,13 +12,10 @@ import 'firebase_mock.dart';
 import 'firebase_auth_mock.dart';
 
 void main() {
-  late FirebaseAuth mockAuth;
-  late FirebaseFirestore mockDb;
-
   setUpAll(() async {
     await initializeMockFirebase();
-    mockAuth = mockFirebaseAuth(); 
-    mockDb = mockFirestore(); 
+    FirebaseAuth.instanceFor(app: Firebase.app()); 
+    FirebaseFirestore.instance; 
   });
 
   testWidgets("App starts at IntroPage and navigates to WelcomePage", (WidgetTester tester) async {

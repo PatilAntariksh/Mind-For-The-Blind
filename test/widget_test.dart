@@ -7,7 +7,6 @@ import 'package:mind_for_the_blind/screens/welcome_page.dart';
 import 'package:mind_for_the_blind/screens/signup_page.dart';
 import 'package:mind_for_the_blind/screens/login_page.dart';
 import 'package:mind_for_the_blind/screens/Mode_selection.dart';
-import 'firebase_mock.dart'; 
 
 void main() {
   setUpAll(() async {

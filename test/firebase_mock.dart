@@ -17,12 +17,12 @@ Future<void> initializeMockFirebase() async {
 /// Mock Firebase Platform Implementation
 class MockFirebasePlatform extends FirebasePlatform {
   @override
-  Future<FirebaseApp> initializeApp({String? name, FirebaseOptions? options}) async {
-    return MockFirebaseAppPlatform(name ?? 'mockApp', options);
+  Future<FirebaseAppPlatform> initializeApp({String? name, FirebaseOptions? options}) async {
+    return MockFirebaseAppPlatform(name ?? defaultFirebaseAppName, options);
   }
 
   @override
-  FirebaseApp app({String name = defaultFirebaseAppName}) {
+  FirebaseAppPlatform app([String name = defaultFirebaseAppName]) {
     return MockFirebaseAppPlatform(name, null);
   }
 }

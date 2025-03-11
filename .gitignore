@@ -54,7 +54,6 @@ gradle.properties  # Ignore it unless necessary
 android.xml
 android/app/src/main/res/xml/
 !android/app/src/main/res/xml/android.xml
-android/app/src/main/AndroidManifest.xml
 
 
 app.*.symbols

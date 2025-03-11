@@ -1,47 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:capstone_project/main.dart';
+import 'package:capstone_project/screens/intro_page.dart';
+import 'package:capstone_project/screens/welcome_page.dart';
+import 'package:capstone_project/screens/signup_page.dart';
+import 'package:capstone_project/screens/login_page.dart';
+import 'package:capstone_project/screens/mode_selection.dart';
 
 void main() {
-  testWidgets('App starts at IntroPage and navigates to WelcomePage', (WidgetTester tester) async {
-    // Build the app and trigger a frame.
-    await tester.pumpWidget(CapstoneProjectApp());
+  group('Widget Tests', () {
+    testWidgets('App starts at IntroPage and navigates to WelcomePage', (WidgetTester tester) async {
+      await tester.pumpWidget(CapstoneProjectApp());
+      expect(find.byType(IntroPage), findsOneWidget);
+      await tester.pumpAndSettle();
+      expect(find.byType(WelcomePage), findsOneWidget);
+    });
 
-    // Verify the IntroPage is displayed
-    expect(find.text("Mind For the Blind"), findsOneWidget);
+    testWidgets('Clicking "New User" navigates to SignUpPage', (WidgetTester tester) async {
+      await tester.pumpWidget(CapstoneProjectApp());
+      await tester.pumpAndSettle();
+      await tester.tap(find.text("New User"));
+      await tester.pumpAndSettle();
+      expect(find.byType(SignUpPage), findsOneWidget);
+    });
 
-    // Wait for the splash screen to transition (simulate the delay)
-    await tester.pumpAndSettle(Duration(seconds: 4));
-
-    // Verify that the WelcomePage appears after transition
-    expect(find.text("Mind For the Blind"), findsWidgets);
-  });
-
-  testWidgets('Clicking "New User" navigates to SignUpPage', (WidgetTester tester) async {
-    await tester.pumpWidget(CapstoneProjectApp());
-
-    // Wait for navigation to WelcomePage
-    await tester.pumpAndSettle(Duration(seconds: 4));
-
-    // Find the "New User" button and tap it
-    await tester.tap(find.text("New User"));
-    await tester.pumpAndSettle();
-
-    // Verify that SignUpPage appears
-    expect(find.text("Sign Up"), findsOneWidget);
-  });
-
-  testWidgets('Clicking "Login" does not navigate without biometrics', (WidgetTester tester) async {
-    await tester.pumpWidget(CapstoneProjectApp());
-
-    // Wait for navigation to WelcomePage
-    await tester.pumpAndSettle(Duration(seconds: 4));
-
-    // Find and tap the "Login" button
-    await tester.tap(find.text("Login"));
-    await tester.pumpAndSettle();
-
-    // Ensure we are still on the WelcomePage since biometrics should block navigation
-    expect(find.text("Mind For the Blind"), findsWidgets);
+    testWidgets('Clicking "Login" navigates to LoginPage', (WidgetTester tester) async {
+      await tester.pumpWidget(CapstoneProjectApp());
+      await tester.pumpAndSettle();
+      await tester.tap(find.text("Login"));
+      await tester.pumpAndSettle();
+      expect(find.byType(LoginPage), findsOneWidget);
+    });
   });
 }

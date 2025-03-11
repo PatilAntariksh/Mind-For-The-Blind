@@ -1,0 +1,60 @@
+import 'package:flutter_test/flutter_test.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_auth_mocks/firebase_auth_mocks.dart';
+
+void main() {
+  group('Firebase Authentication Tests', () {
+    late MockFirebaseAuth mockAuth;
+
+    setUp(() {
+      mockAuth = MockFirebaseAuth();
+    });
+
+    test('User can sign up successfully', () async {
+      final result = await mockAuth.createUserWithEmailAndPassword(
+        email: "test@example.com",
+        password: "password123",
+      );
+
+      expect(result.user, isNotNull);
+      expect(result.user?.email, "test@example.com");
+    });
+
+    test('User can log in successfully', () async {
+      await mockAuth.createUserWithEmailAndPassword(
+        email: "test@example.com",
+        password: "password123",
+      );
+
+      final result = await mockAuth.signInWithEmailAndPassword(
+        email: "test@example.com",
+        password: "password123",
+      );
+
+      expect(result.user, isNotNull);
+      expect(result.user?.email, "test@example.com");
+    });
+
+    test('Current user should be correct after login', () async {
+      await mockAuth.signInWithEmailAndPassword(
+        email: "test@example.com",
+        password: "password123",
+      );
+
+      final currentUser = mockAuth.currentUser;
+
+      expect(currentUser, isNotNull);
+      expect(currentUser?.email, "test@example.com");
+    });
+
+    test('Signing out removes current user', () async {
+      await mockAuth.signInWithEmailAndPassword(
+        email: "test@example.com",
+        password: "password123",
+      );
+
+      await mockAuth.signOut();
+      expect(mockAuth.currentUser, isNull);
+    });
+  });
+}

@@ -10,11 +10,11 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(CapstoneProjectApp()); // Removed 'const'
+  runApp(CapstoneProjectApp());
 }
 
 class CapstoneProjectApp extends StatelessWidget {
-  CapstoneProjectApp({Key? key}) : super(key: key); // Removed 'const'
+  CapstoneProjectApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +23,7 @@ class CapstoneProjectApp extends StatelessWidget {
       title: "Mind for the Blind",
       initialRoute: '/',
       routes: {
-        '/': (context) => IntroPage(), // Removed 'const'
+        '/': (context) => IntroPage(),
         '/welcome': (context) => WelcomePage(),
         '/signup': (context) => SignUpPage(),
         '/login': (context) => LoginPage(),

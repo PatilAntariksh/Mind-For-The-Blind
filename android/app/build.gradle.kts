@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.capstone_project"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
         applicationId = "com.example.capstone_project"

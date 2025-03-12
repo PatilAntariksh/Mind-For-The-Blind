@@ -1,44 +1,106 @@
 import 'package:flutter/material.dart';
 
 class ModeSelection extends StatelessWidget {
+  const ModeSelection({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      body: Center(
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              "New Update Soon...",
-              style: TextStyle(
-                fontSize: 28,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+            const Padding(
+              padding: EdgeInsets.only(bottom: 16.0),
+              child: Text(
+                "Choose Your Mode",
+                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 20),
-            Text(
-              "Update underway",
-              style: TextStyle(fontSize: 16, color: Colors.grey),
-            ),
-            SizedBox(height: 40),
 
 
-            ElevatedButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue,
-                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
+            Expanded(
+              child: Column(
+                children: [
+                  Expanded(
+                    child: Row(
+                      children: [
+                        buildModeButton(
+                          context,
+                          title: "Back",
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.pop(context);
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        buildModeButton(
+                          context,
+                          title: "Video Navigation",
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  const SizedBox(height: 10),
+                  Expanded(
+                    child: Row(
+                      children: [
+                        buildModeButton(
+                          context,
+                          title: "Currency Detection",
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/currency_detection');
+                          },
+                        ),
+                        const SizedBox(width: 10),
+                        buildModeButton(
+                          context,
+                          title: "AI-Assistant",
+                          color: Colors.grey,
+                          onPressed: () {
+                            Navigator.pushNamed(context, '/ai_assistant');
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              child: Text("Back", style: TextStyle(fontSize: 18, color: Colors.white)),
             ),
           ],
+        ),
+      ),
+    );
+  }
+
+  Widget buildModeButton(BuildContext context, {
+    required String title,
+    required Color color,
+    required VoidCallback onPressed,
+  }) {
+    return Expanded(
+      child: GestureDetector(
+        onTap: onPressed,
+        child: Container(
+          decoration: BoxDecoration(
+            color: color,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          alignment: Alignment.center,
+          child: Text(
+            title,
+            style: const TextStyle(fontSize: 18, color: Colors.white), // Text style
+            textAlign: TextAlign.center,
+          ),
         ),
       ),
     );

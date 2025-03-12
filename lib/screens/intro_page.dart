@@ -2,16 +2,20 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 class IntroPage extends StatefulWidget {
+  const IntroPage({Key? key}) : super(key: key);
+
   @override
-  _IntroPageState createState() => _IntroPageState();
+  IntroPageState createState() => IntroPageState();
 }
 
-class _IntroPageState extends State<IntroPage> {
+class IntroPageState extends State<IntroPage> {
   @override
   void initState() {
     super.initState();
-    Timer(Duration(seconds: 5), () {
-      Navigator.pushReplacementNamed(context, '/welcome');
+    Timer(const Duration(seconds: 5), () {
+      if (mounted) {
+        Navigator.pushReplacementNamed(context, '/welcome');
+      }
     });
   }
 
@@ -23,12 +27,12 @@ class _IntroPageState extends State<IntroPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
+            const Text(
               "Mind For the Blind",
               style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-            SizedBox(height: 20),
-            CircularProgressIndicator(),
+            const SizedBox(height: 20),
+            const CircularProgressIndicator(),
           ],
         ),
       ),

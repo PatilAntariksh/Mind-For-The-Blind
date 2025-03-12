@@ -3,11 +3,13 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({Key? key}) : super(key: key);
+
   @override
-  _SignUpPageState createState() => _SignUpPageState();
+  SignUpPageState createState() => SignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class SignUpPageState extends State<SignUpPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
 
@@ -20,12 +22,10 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isLoading = false;
 
   Future<void> _registerUser() async {
-    String firstName = firstNameController.text.trim();
-    String lastName = lastNameController.text.trim();
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    if (firstName.isEmpty || lastName.isEmpty || email.isEmpty || password.isEmpty) {
+    if (email.isEmpty || password.isEmpty) {
       _showMessage("All fields are required!", Colors.red);
       return;
     }
@@ -41,32 +41,17 @@ class _SignUpPageState extends State<SignUpPage> {
       );
 
       await _firestore.collection("users").doc(userCredential.user!.uid).set({
-        "FirstName": firstName,
-        "LastName": lastName,
         "email": email,
-        "Password" : password,
+        "password": password,
         "userType": selectedUserType,
-        "CreatedAt": FieldValue.serverTimestamp(),
+        "createdAt": FieldValue.serverTimestamp(),
       });
 
+      if (!mounted) return;
       _showMessage("User Registered Successfully! Redirecting...", Colors.green);
-
-      // Redirect to WelcomePage after 5 seconds
-      Future.delayed(Duration(seconds: 5), () {
-        Navigator.pushReplacementNamed(context, '/login');
-      });
+      Navigator.pushReplacementNamed(context, '/login');
     } on FirebaseAuthException catch (e) {
-      String errorMessage = "Registration failed";
-      if (e.code == 'email-already-in-use') {
-        errorMessage = "This email is already in use!";
-      } else if (e.code == 'weak-password') {
-        errorMessage = "The password is too weak!";
-      } else if (e.code == 'invalid-email') {
-        errorMessage = "Invalid email format!";
-      }
-      _showMessage(errorMessage, Colors.red);
-    } catch (e) {
-      _showMessage("Error: ${e.toString()}", Colors.red);
+      _showMessage("Error: ${e.message}", Colors.red);
     }
 
     setState(() {
@@ -83,16 +68,13 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Sign Up")),
+      appBar: AppBar(title: const Text("Sign Up")),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: firstNameController, decoration: InputDecoration(labelText: "First Name")),
-            TextField(controller: lastNameController, decoration: InputDecoration(labelText: "Last Name")),
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, decoration: InputDecoration(labelText: "Password"), obscureText: true),
-
+            TextField(controller: emailController, decoration: const InputDecoration(labelText: "Email")),
+            TextField(controller: passwordController, decoration: const InputDecoration(labelText: "Password"), obscureText: true),
             DropdownButton<String>(
               value: selectedUserType,
               items: ["Blind", "Helper"].map((String userType) {
@@ -104,14 +86,12 @@ class _SignUpPageState extends State<SignUpPage> {
                 });
               },
             ),
-
-            SizedBox(height: 20),
-
+            const SizedBox(height: 20),
             isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : ElevatedButton(
               onPressed: _registerUser,
-              child: Text("Sign Up"),
+              child: const Text("Sign Up"),
             ),
           ],
         ),

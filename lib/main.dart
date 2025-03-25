@@ -5,6 +5,8 @@ import 'screens/welcome_page.dart';
 import 'screens/signup_page.dart';
 import 'screens/login_page.dart';
 import 'screens/mode_selection.dart';
+import 'screens/camera_screen.dart';
+import 'screens/test_inference_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,6 +30,8 @@ class CapstoneProjectApp extends StatelessWidget {
         '/signup': (context) => SignUpPage(),
         '/login': (context) => LoginPage(),
         '/mode_selection': (context) => ModeSelection(),
+        '/camera': (context) => CameraScreen(), // Added CameraScreen route
+        '/test_inference': (context) => const TestInferenceScreen(),
       },
     );
   }

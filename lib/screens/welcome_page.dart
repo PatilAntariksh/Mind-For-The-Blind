@@ -9,6 +9,7 @@ class WelcomePage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: Column(
         children: [
+          // Top Text
           Expanded(
             flex: 1,
             child: Center(
@@ -19,6 +20,7 @@ class WelcomePage extends StatelessWidget {
               ),
             ),
           ),
+          // Login & New User Buttons
           Expanded(
             flex: 4,
             child: Row(

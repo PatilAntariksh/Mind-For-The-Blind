@@ -1,3 +1,5 @@
+// ignore_for_file: library_private_types_in_public_api, unnecessary_import
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
@@ -5,6 +7,8 @@ import 'dart:typed_data';
 import 'currency_classifier.dart';
 
 class CameraScreen extends StatefulWidget {
+  const CameraScreen({super.key});
+
   @override
   _CameraScreenState createState() => _CameraScreenState();
 }
@@ -28,7 +32,8 @@ class _CameraScreenState extends State<CameraScreen> {
       Uint8List imageBytes = await imageFile.readAsBytes();
 
       var prediction = classifier.classify(imageBytes);
-      int predictedClass = prediction.indexOf(prediction.reduce((a, b) => a > b ? a : b));
+      int predictedClass =
+      prediction.indexOf(prediction.reduce((a, b) => a > b ? a : b));
 
       setState(() {
         result = "Predicted Currency: \$${getClassLabel(predictedClass)}";
@@ -45,16 +50,16 @@ class _CameraScreenState extends State<CameraScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Currency Recognition")),
+      appBar: AppBar(title: const Text("Currency Recognition")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(result, style: TextStyle(fontSize: 20)),
-            SizedBox(height: 20),
+            Text(result, style: const TextStyle(fontSize: 20)),
+            const SizedBox(height: 20),
             ElevatedButton(
               onPressed: pickImage,
-              child: Text("Capture Image"),
+              child: const Text("Capture Image"),
             ),
           ],
         ),

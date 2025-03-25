@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart'; // for debugPrint
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:tflite_flutter/tflite_flutter.dart';
 
@@ -8,16 +9,16 @@ class ModelService {
     try {
       // 1) Load the raw .tflite bytes from assets
       final modelData = await rootBundle.load('assets/model/currency_model.tflite');
-      print("Model file size: ${modelData.lengthInBytes} bytes");
+      debugPrint("Model file size: ${modelData.lengthInBytes} bytes");
 
       // 2) Convert the file data to a Uint8List buffer
       final buffer = modelData.buffer.asUint8List();
 
       // 3) Create the interpreter from the buffer
-      _interpreter = await Interpreter.fromBuffer(buffer);
-      print("Model loaded successfully from buffer.");
+      _interpreter = Interpreter.fromBuffer(buffer);
+      debugPrint("Model loaded successfully from buffer.");
     } catch (e) {
-      print("Error loading model: $e");
+      debugPrint("Error loading model: $e");
       rethrow;
     }
   }

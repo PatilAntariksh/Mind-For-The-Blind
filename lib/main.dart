@@ -16,7 +16,7 @@ void main() async {
 }
 
 class CapstoneProjectApp extends StatelessWidget {
-  CapstoneProjectApp({Key? key}) : super(key: key);
+  const CapstoneProjectApp({super.key});
 
   @override
   Widget build(BuildContext context) {

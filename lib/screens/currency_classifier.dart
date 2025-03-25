@@ -1,5 +1,6 @@
+import 'package:flutter/foundation.dart'; // for Uint8List and debugPrint
 import 'package:tflite_flutter/tflite_flutter.dart';
-import 'dart:typed_data';
+// Removed 'dart:typed_data' import
 
 class CurrencyClassifier {
   late Interpreter interpreter;
@@ -7,7 +8,7 @@ class CurrencyClassifier {
   /// Load the TFLite model
   Future<void> loadModel() async {
     interpreter = await Interpreter.fromAsset('currency_model.tflite');
-    print("TFLite model loaded successfully");
+    debugPrint("TFLite model loaded successfully");
   }
 
   /// Run classification on an image

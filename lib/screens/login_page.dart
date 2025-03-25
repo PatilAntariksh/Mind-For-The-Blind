@@ -2,11 +2,13 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
+
   @override
-  _LoginPageState createState() => _LoginPageState();
+  LoginPageState createState() => LoginPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
+class LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final TextEditingController emailController = TextEditingController();
@@ -31,10 +33,11 @@ class _LoginPageState extends State<LoginPage> {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
       _showMessage("Login Successful! Redirecting...", Colors.green);
 
-      // Redirect to mode selection after 3 seconds
-      Future.delayed(Duration(seconds: 3), () {
-        Navigator.pushReplacementNamed(context, '/mode_selection');
-      });
+      // Use await instead of callback to avoid holding onto context for 3s
+      await Future.delayed(const Duration(seconds: 3));
+      if (!mounted) return; // Check if the widget is still in the tree
+
+      Navigator.pushReplacementNamed(context, '/mode_selection');
     } on FirebaseAuthException catch (e) {
       String errorMessage = "Login failed";
       if (e.code == 'user-not-found') {
@@ -53,6 +56,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _showMessage(String message, Color color) {
+    if (!mounted) return;
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text(message), backgroundColor: color),
     );
@@ -61,21 +65,26 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Login")),
+      appBar: AppBar(title: const Text("Login")),
       body: Padding(
-        padding: EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            TextField(controller: emailController, decoration: InputDecoration(labelText: "Email")),
-            TextField(controller: passwordController, decoration: InputDecoration(labelText: "Password"), obscureText: true),
-
-            SizedBox(height: 20),
-
+            TextField(
+              controller: emailController,
+              decoration: const InputDecoration(labelText: "Email"),
+            ),
+            TextField(
+              controller: passwordController,
+              decoration: const InputDecoration(labelText: "Password"),
+              obscureText: true,
+            ),
+            const SizedBox(height: 20),
             isLoading
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : ElevatedButton(
               onPressed: _loginUser,
-              child: Text("Login"),
+              child: const Text("Login"),
             ),
           ],
         ),

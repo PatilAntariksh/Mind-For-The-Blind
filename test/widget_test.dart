@@ -1,11 +1,9 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:capstone_project/main.dart';
 import 'package:capstone_project/screens/intro_page.dart';
 import 'package:capstone_project/screens/welcome_page.dart';
 import 'package:capstone_project/screens/signup_page.dart';
 import 'package:capstone_project/screens/login_page.dart';
-import 'package:capstone_project/screens/mode_selection.dart';
 
 void main() {
   group('Widget Tests', () {

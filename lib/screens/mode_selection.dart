@@ -20,8 +20,6 @@ class ModeSelection extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-
-
             Expanded(
               child: Column(
                 children: [
@@ -42,13 +40,13 @@ class ModeSelection extends StatelessWidget {
                           title: "Video Navigation",
                           color: Colors.grey,
                           onPressed: () {
+                            // This route is still empty.
                             Navigator.pushNamed(context, '');
                           },
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(height: 10),
                   Expanded(
                     child: Row(
@@ -58,7 +56,8 @@ class ModeSelection extends StatelessWidget {
                           title: "Currency Detection",
                           color: Colors.grey,
                           onPressed: () {
-                            Navigator.pushNamed(context, '/currency_detection');
+                            // Updated route to point to the test inference screen.
+                            Navigator.pushNamed(context, '/test_inference');
                           },
                         ),
                         const SizedBox(width: 10),
@@ -82,11 +81,12 @@ class ModeSelection extends StatelessWidget {
     );
   }
 
-  Widget buildModeButton(BuildContext context, {
-    required String title,
-    required Color color,
-    required VoidCallback onPressed,
-  }) {
+  Widget buildModeButton(
+      BuildContext context, {
+        required String title,
+        required Color color,
+        required VoidCallback onPressed,
+      }) {
     return Expanded(
       child: GestureDetector(
         onTap: onPressed,
@@ -98,7 +98,7 @@ class ModeSelection extends StatelessWidget {
           alignment: Alignment.center,
           child: Text(
             title,
-            style: const TextStyle(fontSize: 18, color: Colors.white), // Text style
+            style: const TextStyle(fontSize: 18, color: Colors.white),
             textAlign: TextAlign.center,
           ),
         ),

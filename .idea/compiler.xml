@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <bytecodeTargetLevel>
+      <module name="android.agora_rtc_engine" target="23" />
+      <module name="android.app" target="23" />
+      <module name="android.audio_session" target="23" />
+      <module name="android.audioplayers_android" target="23" />
+      <module name="android.camera_android" target="23" />
+      <module name="android.cloud_firestore" target="23" />
+      <module name="android.connectivity_plus" target="23" />
+      <module name="android.device_info_plus" target="23" />
+      <module name="android.file_picker" target="23" />
+      <module name="android.firebase_auth" target="23" />
+      <module name="android.firebase_core" target="23" />
+      <module name="android.floating" target="23" />
+      <module name="android.flutter_callkit_incoming_yoer" target="23" />
+      <module name="android.flutter_logs" target="23" />
+      <module name="android.flutter_plugin_android_lifecycle" target="23" />
+      <module name="android.flutter_ringtone_player" target="23" />
+      <module name="android.flutter_secure_storage" target="23" />
+      <module name="android.flutter_tts" target="23" />
+      <module name="android.flutter_volume_controller" target="23" />
+      <module name="android.flutter_webrtc" target="23" />
+      <module name="android.image_picker_android" target="23" />
+      <module name="android.integration_test" target="23" />
+      <module name="android.iris_method_channel" target="23" />
+      <module name="android.jitsi_meet_wrapper" target="23" />
+      <module name="android.just_audio" target="23" />
+      <module name="android.local_auth_android" target="23" />
+      <module name="android.native_device_orientation" target="23" />
+      <module name="android.package_info_plus" target="23" />
+      <module name="android.path_provider_android" target="23" />
+      <module name="android.permission_handler_android" target="23" />
+      <module name="android.shared_preferences_android" target="23" />
+      <module name="android.speech_to_text" target="23" />
+      <module name="android.sqflite_android" target="23" />
+      <module name="android.tflite_flutter" target="23" />
+      <module name="android.vibration" target="23" />
+      <module name="android.wakelock_plus" target="23" />
+      <module name="android.zego_express_engine" target="23" />
+      <module name="android.zego_uikit" target="23" />
+      <module name="android.zego_uikit_prebuilt_call" target="23" />
+      <module name="android.zego_uikit_signaling_plugin" target="23" />
+      <module name="android.zego_zim" target="23" />
+      <module name="android.zego_zpns" target="23" />
+      <module name="com.baseflow.permissionhandler.android.permission_handler_android" target="23" />
+      <module name="gradle" target="23" />
+      <module name="gradle.main" target="11" />
+      <module name="gradle.test" target="11" />
+      <module name="io.flutter.plugins.firebase.auth.android.firebase_auth" target="23" />
+      <module name="io.flutter.plugins.firebase.cloudfirestore.android.cloud_firestore" target="23" />
+      <module name="io.flutter.plugins.firebase.core.android.firebase_core" target="23" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

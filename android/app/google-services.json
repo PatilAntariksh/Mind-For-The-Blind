@@ -1,0 +1,67 @@
+{
+  "project_info": {
+    "project_number": "840586786321",
+    "project_id": "mindfortheblind",
+    "storage_bucket": "mindfortheblind.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840586786321:android:96e87c0ecf9b215cf0e3b0",
+        "android_client_info": {
+          "package_name": "com.example.capstone_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD18Novqv7duE_AetngXpmZ4stFgFtN_rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840586786321:android:6576c51087d83608f0e3b0",
+        "android_client_info": {
+          "package_name": "com.example.mind_for_blind_1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD18Novqv7duE_AetngXpmZ4stFgFtN_rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:840586786321:android:43853614facca66ff0e3b0",
+        "android_client_info": {
+          "package_name": "com.example.mind_for_the_blind"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD18Novqv7duE_AetngXpmZ4stFgFtN_rs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

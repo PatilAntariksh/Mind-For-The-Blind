@@ -1,0 +1,2 @@
+C:/Users/Kavita Patil/ProjCap/Mind-For-The-Blind-function/android/app/.cxx/Debug/5m2cf064/armeabi-v7a/CMakeFiles/edit_cache.dir
+C:/Users/Kavita Patil/ProjCap/Mind-For-The-Blind-function/android/app/.cxx/Debug/5m2cf064/armeabi-v7a/CMakeFiles/rebuild_cache.dir

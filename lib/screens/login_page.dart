@@ -16,32 +16,34 @@ class LoginPageState extends State<LoginPage> {
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
   bool isLoading = false;
+  bool showBiometricButton = false;
 
   @override
   void initState() {
     super.initState();
-    _checkBiometricLogin();
+    _prepareBiometric(); // auto trigger
   }
 
-  Future<void> _checkBiometricLogin() async {
+  Future<void> _prepareBiometric() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email') ?? '';
     final password = prefs.getString('password') ?? '';
 
-    if (email.isNotEmpty && password.isNotEmpty) {
-      final canCheck = await auth.canCheckBiometrics;
-      final isDeviceSupported = await auth.isDeviceSupported();
-      if (canCheck && isDeviceSupported) {
-        final didAuthenticate = await auth.authenticate(
-          localizedReason: 'Authenticate to log in',
-          options: const AuthenticationOptions(biometricOnly: true),
-        );
-        if (didAuthenticate) {
-          emailController.text = email;
-          passwordController.text = password;
-          _loginUser(bypassInput: true);
-        }
+    final canCheck = await auth.canCheckBiometrics;
+    final isSupported = await auth.isDeviceSupported();
+
+    if (canCheck && isSupported && email.isNotEmpty && password.isNotEmpty) {
+      setState(() => showBiometricButton = true);
+      final didAuthenticate = await auth.authenticate(
+        localizedReason: 'Authenticate to log in',
+        options: const AuthenticationOptions(biometricOnly: true),
+      );
+      if (didAuthenticate) {
+        emailController.text = email;
+        passwordController.text = password;
+        _loginUser(bypassInput: true);
       }
     }
   }
@@ -59,7 +61,6 @@ class LoginPageState extends State<LoginPage> {
 
     try {
       await _auth.signInWithEmailAndPassword(email: email, password: password);
-
       final prefs = await SharedPreferences.getInstance();
       prefs.setString('email', email);
       prefs.setString('password', password);
@@ -114,6 +115,14 @@ class LoginPageState extends State<LoginPage> {
               onPressed: () => _loginUser(),
               child: const Text("Login"),
             ),
+            const SizedBox(height: 10),
+            // Optional manual biometric login button (only shows if supported)
+            if (showBiometricButton)
+              ElevatedButton.icon(
+                onPressed: _prepareBiometric,
+                icon: const Icon(Icons.fingerprint),
+                label: const Text("Login with Biometrics"),
+              ),
           ],
         ),
       ),

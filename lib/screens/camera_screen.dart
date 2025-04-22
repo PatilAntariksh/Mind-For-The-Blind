@@ -15,12 +15,12 @@ class CameraScreen extends StatefulWidget {
 }
 
 class _CameraScreenState extends State<CameraScreen> {
-  late CameraController     _controller;
-  bool                      _isReady     = false;
-  img.Image?                _lastCaptured;
-  String                    _resultText  = "Tap below to scan a note";
-  final ModelService        _modelService= ModelService();
-  final FlutterTts          _tts          = FlutterTts();
+  late CameraController _controller;
+  bool _isReady = false;
+  img.Image? _lastCaptured;
+  String _resultText = "Tap below to scan a note";
+  final ModelService _modelService = ModelService();
+  final FlutterTts _tts = FlutterTts();
 
   @override
   void initState() {
@@ -32,8 +32,18 @@ class _CameraScreenState extends State<CameraScreen> {
     // 1) load model & TTS
     await _modelService.loadModel();
     await _tts.setLanguage("en-US");
+    await _tts.setSpeechRate(0.5);
+    await _tts.setPitch(1.0);
+    await _tts.setVolume(1.0);
 
-    // 2) grab first available camera
+    // 2) speak screen layout
+    await _tts.speak(
+      "This is the currency detection screen. "
+          "The bottom half is a large tappable area. "
+          "Tap it to scan a currency note and hear its denomination.",
+    );
+
+    // 3) grab first available camera
     final cameras = await availableCameras();
     _controller = CameraController(
       cameras.first,
@@ -50,7 +60,6 @@ class _CameraScreenState extends State<CameraScreen> {
     if (!_isReady) return;
 
     try {
-      // 1) take a picture
       final file = await _controller.takePicture();
       final bytes = await File(file.path).readAsBytes();
       final decoded = img.decodeImage(bytes);
@@ -59,32 +68,25 @@ class _CameraScreenState extends State<CameraScreen> {
         _resultText = "Could not decode image.";
         await _tts.speak(_resultText);
       } else {
-        // 2) preprocess
         final resized = img.copyResize(decoded, width: 224, height: 224);
         final input = <List<List<List<double>>>>[
           List.generate(224, (y) {
             return List.generate(224, (x) {
               final px = resized.getPixel(x, y) as img.Pixel;
-              return [
-                px.r / 255.0,
-                px.g / 255.0,
-                px.b / 255.0,
-              ];
+              return [px.r / 255.0, px.g / 255.0, px.b / 255.0];
             });
           }),
         ];
 
-        // 3) inference
         final output = await _modelService.runInferenceOnImage(input);
-        final probs  = output.first;
-        final max    = probs.reduce((a, b) => a > b ? a : b);
-        final idx    = probs.indexOf(max);
-        final labels = ["1","5","10","20","50","100"];
-        final label  = "\$${labels[idx]}";
+        final probs = output.first;
+        final max = probs.reduce((a, b) => a > b ? a : b);
+        final idx = probs.indexOf(max);
+        final labels = ["1", "5", "10", "20", "50", "100"];
+        final label = "\$${labels[idx]}";
 
-        // 4) update UI & speak
         _lastCaptured = decoded;
-        _resultText   = "Detected $label";
+        _resultText = "Detected $label";
         await _tts.speak("Detected $label bill");
       }
     } catch (e) {
@@ -141,7 +143,8 @@ class _CameraScreenState extends State<CameraScreen> {
             child: Semantics(
               label: "Scan note",
               button: true,
-              onTapHint: "Takes a photo of the note and announces its denomination",
+              onTapHint:
+              "Takes a photo of the note and announces its denomination",
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: _scanNote,

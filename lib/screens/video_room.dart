@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:capstone_project/screens/video_call.dart';
 
 class VideoRoomPage extends StatefulWidget {
@@ -11,6 +12,7 @@ class VideoRoomPage extends StatefulWidget {
 
 class _VideoRoomPageState extends State<VideoRoomPage> {
   final TextEditingController _roomIdController = TextEditingController();
+  final FlutterTts _flutterTts = FlutterTts();
   late stt.SpeechToText _speech;
   bool _isListening = false;
 
@@ -18,12 +20,28 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
   void initState() {
     super.initState();
     _speech = stt.SpeechToText();
+    _speakScreenInstructions();
   }
 
   @override
   void dispose() {
     _roomIdController.dispose();
+    _speech.stop();
+    _flutterTts.stop();
     super.dispose();
+  }
+
+  Future<void> _speakScreenInstructions() async {
+    await _flutterTts.setLanguage("en-US");
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.setVolume(1.0);
+
+    await _flutterTts.speak(
+      "This is the video room screen. "
+          "Tap anywhere on the upper half to speak your room ID using the microphone. "
+          "Tap anywhere on the bottom half to press the Join Call button to enter the room.",
+    );
   }
 
   void _listen() async {
@@ -67,22 +85,24 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
       appBar: AppBar(title: const Text("Join Video Call")),
       body: Column(
         children: [
-          // 🔝 Top Half - Mic Button
-          SizedBox(
-            height: height * 0.4,
-            child: Center(
-              child: IconButton(
-                icon: Icon(
+          // 🔝 Full Top Half - Tappable Mic Button
+          GestureDetector(
+            onTap: _listen,
+            child: Container(
+              height: height * 0.4,
+              width: double.infinity,
+              color: Colors.transparent,
+              child: Center(
+                child: Icon(
                   _isListening ? Icons.mic : Icons.mic_none,
                   size: 64,
                   color: _isListening ? Colors.red : Colors.blue,
                 ),
-                onPressed: _listen,
               ),
             ),
           ),
 
-          // 🎤 Middle - TextField
+          // 🎤 Middle - TextField for Room ID
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: TextField(
@@ -98,7 +118,7 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
 
           const SizedBox(height: 20),
 
-          // 🔻 Bottom Half - Join Button
+          // 🔻 Bottom Join Button
           Expanded(
             child: Container(
               width: double.infinity,

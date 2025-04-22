@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:local_auth/local_auth.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,20 +14,33 @@ class LoginPage extends StatefulWidget {
 class LoginPageState extends State<LoginPage> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final LocalAuthentication auth = LocalAuthentication();
+  final FlutterTts flutterTts = FlutterTts();
 
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
   bool isLoading = false;
-  bool showBiometricButton = false;
 
   @override
   void initState() {
     super.initState();
-    _prepareBiometric(); // auto trigger
+    _speakBiometricPrompt(); // speak message on screen load
+    _checkBiometricLogin(); // auto biometric login if data saved
+  }
+  @override
+  void dispose() {
+    flutterTts.stop();
+    super.dispose();
+  }
+  Future<void> _speakBiometricPrompt() async {
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.speak("Place your finger on the sensor to login using biometrics.");
   }
 
-  Future<void> _prepareBiometric() async {
+  Future<void> _checkBiometricLogin() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final email = prefs.getString('email') ?? '';
     final password = prefs.getString('password') ?? '';
@@ -35,11 +49,11 @@ class LoginPageState extends State<LoginPage> {
     final isSupported = await auth.isDeviceSupported();
 
     if (canCheck && isSupported && email.isNotEmpty && password.isNotEmpty) {
-      setState(() => showBiometricButton = true);
       final didAuthenticate = await auth.authenticate(
-        localizedReason: 'Authenticate to log in',
+        localizedReason: 'Authenticate to login',
         options: const AuthenticationOptions(biometricOnly: true),
       );
+
       if (didAuthenticate) {
         emailController.text = email;
         passwordController.text = password;
@@ -116,13 +130,11 @@ class LoginPageState extends State<LoginPage> {
               child: const Text("Login"),
             ),
             const SizedBox(height: 10),
-            // Optional manual biometric login button (only shows if supported)
-            if (showBiometricButton)
-              ElevatedButton.icon(
-                onPressed: _prepareBiometric,
-                icon: const Icon(Icons.fingerprint),
-                label: const Text("Login with Biometrics"),
-              ),
+            ElevatedButton.icon(
+              onPressed: _checkBiometricLogin,
+              icon: const Icon(Icons.fingerprint),
+              label: const Text("Login with Biometrics"),
+            ),
           ],
         ),
       ),

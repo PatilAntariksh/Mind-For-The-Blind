@@ -73,7 +73,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> with SingleTicker
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $apiKey',
-        'HTTP-Referer': 'https://yourprojectname.com',
+        'HTTP-Referer': '',
         'X-Title': 'MindForTheBlind Assistant'
       },
       body: json.encode({

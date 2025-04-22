@@ -1,7 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 
-class ModeSelection extends StatelessWidget {
+class ModeSelection extends StatefulWidget {
   const ModeSelection({super.key});
+
+  @override
+  State<ModeSelection> createState() => _ModeSelectionState();
+}
+
+class _ModeSelectionState extends State<ModeSelection> {
+  final FlutterTts flutterTts = FlutterTts();
+
+  @override
+  void initState() {
+    super.initState();
+
+    // ✅ Small delay to ensure screen is fully built before speaking
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _speakScreenInfo();
+    });
+  }
+
+  Future<void> _speakScreenInfo() async {
+    await flutterTts.stop(); // 🛑 Stop any previous speech
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5); // ✅ Smooth natural speed
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setVolume(1.0);
+
+    await flutterTts.speak(
+      "This is the mode selection screen. "
+          "Top left has the Back button. "
+          "Top right has the Video Navigation button. "
+          "Bottom left has the Currency Detection button. "
+          "Bottom right has the AI Assistant button.",
+    );
+  }
+
+  @override
+  void dispose() {
+    flutterTts.stop(); // ✅ Clean up
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +80,6 @@ class ModeSelection extends StatelessWidget {
                           title: "Video Navigation",
                           color: Colors.grey,
                           onPressed: () {
-                            // This route is still empty.
                             Navigator.pushNamed(context, '/video_room');
                           },
                         ),
@@ -56,7 +95,6 @@ class ModeSelection extends StatelessWidget {
                           title: "Currency Detection",
                           color: Colors.grey,
                           onPressed: () {
-                            // Updated route to point to the test inference screen.
                             Navigator.pushNamed(context, '/camera');
                           },
                         ),

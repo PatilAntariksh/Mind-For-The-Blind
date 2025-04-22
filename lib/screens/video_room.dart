@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_tts/flutter_tts.dart';
-import 'package:capstone_project/screens/video_call.dart';
+import 'package:speech_to_text/speech_to_text.dart' as stt;
+import 'video_call.dart';
 
 class VideoRoomPage extends StatefulWidget {
   const VideoRoomPage({super.key});
@@ -12,36 +14,74 @@ class VideoRoomPage extends StatefulWidget {
 
 class _VideoRoomPageState extends State<VideoRoomPage> {
   final TextEditingController _roomIdController = TextEditingController();
-  final FlutterTts _flutterTts = FlutterTts();
-  late stt.SpeechToText _speech;
+  final FlutterTts flutterTts = FlutterTts();
+  final stt.SpeechToText _speech = stt.SpeechToText();
   bool _isListening = false;
 
   @override
   void initState() {
     super.initState();
-    _speech = stt.SpeechToText();
-    _speakScreenInstructions();
+    Future.delayed(const Duration(milliseconds: 300), () {
+      _speakScreenInstructions();
+    });
+  }
+
+  Future<void> _speakScreenInstructions() async {
+    await flutterTts.stop();
+    await flutterTts.setLanguage("en-US");
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setVolume(1.0);
+
+    await flutterTts.speak(
+      "This is the video room screen. Tap anywhere on the top half to speak the room ID. Enter a room ID in the middle box. Then tap the bottom half to join the video call.",
+    );
   }
 
   @override
   void dispose() {
     _roomIdController.dispose();
-    _speech.stop();
-    _flutterTts.stop();
+    flutterTts.stop();
     super.dispose();
   }
 
-  Future<void> _speakScreenInstructions() async {
-    await _flutterTts.setLanguage("en-US");
-    await _flutterTts.setSpeechRate(0.5);
-    await _flutterTts.setPitch(1.0);
-    await _flutterTts.setVolume(1.0);
+  Future<void> _logUserToRoom(String roomId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) return;
 
-    await _flutterTts.speak(
-      "This is the video room screen. "
-          "Tap anywhere on the upper half to speak your room ID using the microphone. "
-          "Tap anywhere on the bottom half to press the Join Call button to enter the room.",
-    );
+    final userDoc = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(user.uid)
+        .get();
+
+    final userData = userDoc.data();
+    final name = userData?['firstName'];
+    final email = userData?['email'];
+    final userType = userData?['userType'];
+
+    final docRef = FirebaseFirestore.instance
+        .collection('video_calls')
+        .doc(roomId);
+
+    final docSnapshot = await docRef.get();
+
+    if (docSnapshot.exists) {
+      await docRef.update({
+        'callers.names': FieldValue.arrayUnion([name]),
+        'callers.emails': FieldValue.arrayUnion([email]),
+        'callers.userTypes': FieldValue.arrayUnion([userType]),
+      });
+    } else {
+      await docRef.set({
+        'roomId': roomId,
+        'timestamp': DateTime.now(),
+        'callers': {
+          'names': [name],
+          'emails': [email],
+          'userTypes': [userType],
+        }
+      });
+    }
   }
 
   void _listen() async {
@@ -61,20 +101,23 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
     }
   }
 
-  void _joinCall() {
+  void _joinCall() async {
     final roomId = _roomIdController.text.trim();
-    if (roomId.isNotEmpty) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => VideoCallPage(roomId: roomId),
-        ),
-      );
-    } else {
+    if (roomId.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Please enter a Room ID")),
       );
+      return;
     }
+
+    await _logUserToRoom(roomId);
+
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => VideoCallPage(roomId: roomId),
+      ),
+    );
   }
 
   @override
@@ -85,7 +128,6 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
       appBar: AppBar(title: const Text("Join Video Call")),
       body: Column(
         children: [
-          // 🔝 Full Top Half - Tappable Mic Button
           GestureDetector(
             onTap: _listen,
             child: Container(
@@ -101,8 +143,6 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
               ),
             ),
           ),
-
-          // 🎤 Middle - TextField for Room ID
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 24),
             child: TextField(
@@ -115,24 +155,17 @@ class _VideoRoomPageState extends State<VideoRoomPage> {
               style: const TextStyle(fontSize: 18),
             ),
           ),
-
-          const SizedBox(height: 20),
-
-          // 🔻 Bottom Join Button
+          const SizedBox(height: 24),
           Expanded(
-            child: Container(
-              width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 24),
-              child: ElevatedButton.icon(
-                onPressed: _joinCall,
-                icon: const Icon(Icons.video_call),
-                label: const Text("Join Call", style: TextStyle(fontSize: 18)),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.blueAccent,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 16),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+            child: GestureDetector(
+              onTap: _joinCall,
+              child: Container(
+                width: double.infinity,
+                color: Colors.blueAccent,
+                child: const Center(
+                  child: Text(
+                    "Join Call",
+                    style: TextStyle(fontSize: 20, color: Colors.white),
                   ),
                 ),
               ),

@@ -24,8 +24,8 @@ class LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    _speakBiometricPrompt(); // speak message on screen load
-    _checkBiometricLogin(); // auto biometric login if data saved
+    _speakBiometricPrompt(); 
+    _checkBiometricLogin(); 
   }
   @override
   void dispose() {

@@ -82,7 +82,7 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> with SingleTicker
 
   Future<void> _sendToAI(String input) async {
     const endpoint = 'https://openrouter.ai/api/v1/chat/completions';
-    const apiKey = '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'; // Replace with your actual OpenRouter key
+    const apiKey = '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';
 
     final response = await http.post(
       Uri.parse(endpoint),

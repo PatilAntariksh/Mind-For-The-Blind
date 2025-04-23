@@ -3,10 +3,10 @@ name: Flutter CI/CD
 on:
   push:
     branches:
-      - function
+      - testing
   pull_request:
     branches:
-      - function
+      - testing
 
 jobs:
   test:

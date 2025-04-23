@@ -8,7 +8,6 @@ class VideoCallPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Generate a unique user ID each time
     final String userId = 'user_${DateTime.now().millisecondsSinceEpoch}';
 
     return ZegoUIKitPrebuiltCall(

@@ -27,6 +27,22 @@ class _AIAssistantScreenState extends State<AIAssistantScreen> with SingleTicker
       vsync: this,
       duration: const Duration(seconds: 1),
     )..repeat(reverse: true);
+
+    Future.delayed(const Duration(milliseconds: 500), () {
+      _speakIntroMessage();
+    });
+  }
+
+  Future<void> _speakIntroMessage() async {
+    await _flutterTts.setLanguage("en-US");
+    await _flutterTts.setSpeechRate(0.5);
+    await _flutterTts.setPitch(1.0);
+    await _flutterTts.setVolume(1.0);
+
+    await _flutterTts.speak(
+        "This is the AI Assistant screen. Tap the bottom button and speak your question. "
+            "The assistant will listen and respond out loud."
+    );
   }
 
   Future<void> _listen() async {

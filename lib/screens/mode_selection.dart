@@ -15,16 +15,16 @@ class _ModeSelectionState extends State<ModeSelection> {
   void initState() {
     super.initState();
 
-    // ✅ Small delay to ensure screen is fully built before speaking
+    
     Future.delayed(const Duration(milliseconds: 300), () {
       _speakScreenInfo();
     });
   }
 
   Future<void> _speakScreenInfo() async {
-    await flutterTts.stop(); // 🛑 Stop any previous speech
+    await flutterTts.stop(); 
     await flutterTts.setLanguage("en-US");
-    await flutterTts.setSpeechRate(0.5); // ✅ Smooth natural speed
+    await flutterTts.setSpeechRate(0.5); 
     await flutterTts.setPitch(1.0);
     await flutterTts.setVolume(1.0);
 
@@ -39,7 +39,7 @@ class _ModeSelectionState extends State<ModeSelection> {
 
   @override
   void dispose() {
-    flutterTts.stop(); // ✅ Clean up
+    flutterTts.stop(); 
     super.dispose();
   }
 

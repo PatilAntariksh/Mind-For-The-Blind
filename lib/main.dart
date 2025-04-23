@@ -6,7 +6,6 @@ import 'screens/signup_page.dart';
 import 'screens/login_page.dart';
 import 'screens/mode_selection.dart';
 import 'screens/camera_screen.dart';
-import 'screens/test_inference_screen.dart';
 import 'screens/ai_assistant.dart';
 import 'screens/video_room.dart';
 import 'screens/video_call.dart';

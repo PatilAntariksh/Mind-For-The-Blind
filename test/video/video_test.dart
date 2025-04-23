@@ -12,6 +12,6 @@ void main() {
       ),
     );
 
-    expect(find.text('Video Call'), findsOneWidget);
+    expect(find.text('Join Call'), findsOneWidget);
   });
 }

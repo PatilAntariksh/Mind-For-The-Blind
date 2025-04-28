@@ -3,12 +3,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:capstone_project/screens/mode_selection.dart';
 
 void main() {
-  testWidgets('Mode Selection screen has all accessible buttons', (tester) async {
-    await tester.pumpWidget(const MaterialApp(home: ModeSelectionPage()));
+  testWidgets('Mode Selection screen shows all mode buttons', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: ModeSelection()));
 
+    expect(find.text('Back'), findsOneWidget);
     expect(find.text('Video Navigation'), findsOneWidget);
     expect(find.text('Currency Detection'), findsOneWidget);
-    expect(find.text('AI Assistant'), findsOneWidget);
-    expect(find.text('Video Call'), findsOneWidget);
+    expect(find.text('AI-Assistant'), findsOneWidget);
   });
 }

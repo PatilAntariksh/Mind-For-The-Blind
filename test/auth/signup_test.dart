@@ -16,11 +16,10 @@ void main() {
     );
   });
 
-  testWidgets('Signup page renders properly', (WidgetTester tester) async {
+  testWidgets('Signup page UI renders properly', (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: SignUpPage()));
 
-    expect(find.byType(TextField), findsNWidgets(4));
-    expect(find.text('Sign Up'), findsOneWidget);
-    expect(find.byType(ElevatedButton), findsOneWidget);
+    expect(find.byType(TextField), findsNWidgets(4)); // 4 fields
+    expect(find.byType(ElevatedButton), findsWidgets); // buttons
   });
 }

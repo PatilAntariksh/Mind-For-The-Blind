@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:capstone_project/screens/login_page.dart';
+import '../mocks/mock_services.dart';
 
 void main() {
   setUpAll(() async {
@@ -12,7 +13,9 @@ void main() {
     });
   });
 
-  testWidgets('Biometric login pre-fills stored credentials', (WidgetTester tester) async {
+  testWidgets('Biometric login pre-fills stored credentials', (tester) async {
+    final mockLocalAuth = MockLocalAuth();
+
     await tester.pumpWidget(const MaterialApp(home: LoginPage()));
     await tester.pumpAndSettle();
 

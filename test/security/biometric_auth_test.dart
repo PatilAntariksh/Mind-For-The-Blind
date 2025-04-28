@@ -1,16 +1,23 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:flutter/material.dart';
 import 'package:capstone_project/screens/login_page.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "fake-api-key",
+        appId: "1:1234567890:web:abcdef123456",
+        messagingSenderId: "1234567890",
+        projectId: "test-project-id",
+      ),
+    );
   });
 
-  testWidgets('Biometric login auto-fills stored credentials', (WidgetTester tester) async {
+  testWidgets('Biometric login pre-fills stored credentials', (WidgetTester tester) async {
     SharedPreferences.setMockInitialValues({
       'email': 'test@example.com',
       'password': 'password123',

@@ -6,14 +6,21 @@ import 'package:firebase_core/firebase_core.dart';
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
-    await Firebase.initializeApp();
+    await Firebase.initializeApp(
+      options: const FirebaseOptions(
+        apiKey: "fake-api-key",
+        appId: "1:1234567890:web:abcdef123456",
+        messagingSenderId: "1234567890",
+        projectId: "test-project-id",
+      ),
+    );
   });
 
   testWidgets('Signup page renders properly', (WidgetTester tester) async {
     await tester.pumpWidget(const MaterialApp(home: SignUpPage()));
 
-    expect(find.byType(TextField), findsNWidgets(4)); // First name, last name, email, password
-    expect(find.text('Sign Up'), findsOneWidget); 
+    expect(find.byType(TextField), findsNWidgets(4));
+    expect(find.text('Sign Up'), findsOneWidget);
     expect(find.byType(ElevatedButton), findsOneWidget);
   });
 }

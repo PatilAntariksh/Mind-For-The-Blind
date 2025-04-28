@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'screens/mode_selection.dart';
+import 'package:capstone_project/screens/mode_selection.dart';
 
 void main() {
   testWidgets('Mode selection screen shows all buttons', (WidgetTester tester) async {

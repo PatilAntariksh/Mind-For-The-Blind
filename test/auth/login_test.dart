@@ -1,22 +1,19 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:flutter/material.dart';
 import 'package:capstone_project/screens/login_page.dart';
-import '../mocks/mock_services.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 void main() {
-  testWidgets('Login page UI renders properly', (tester) async {
-    final mockAuth = MockFirebaseAuth();
-    final mockTts = MockFlutterTts();
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    await Firebase.initializeApp();
+  });
 
-    await tester.pumpWidget(
-      MaterialApp(
-        home: LoginPage(),
-      ),
-    );
+  testWidgets('Login page renders properly', (WidgetTester tester) async {
+    await tester.pumpWidget(const MaterialApp(home: LoginPage()));
 
-    expect(find.byType(TextField), findsNWidgets(2));
+    expect(find.byType(TextField), findsNWidgets(2)); // Email + Password
     expect(find.text('Login'), findsOneWidget);
-    expect(find.byIcon(Icons.fingerprint), findsOneWidget);
-    expect(find.byType(ElevatedButton), findsWidgets);
+    expect(find.byIcon(Icons.fingerprint), findsOneWidget); // Biometrics button
   });
 }

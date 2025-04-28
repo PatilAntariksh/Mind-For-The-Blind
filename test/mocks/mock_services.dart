@@ -20,11 +20,12 @@ class MockLocalAuth extends Mock implements LocalAuthentication {
     bool biometricOnly = false,
     bool useErrorDialogs = true,
     bool stickyAuth = false,
-    List<AuthMessages>? authMessages, // <--- Add this optional parameter!
+    dynamic authMessages, // <- instead of List<AuthMessages> to avoid import errors
+    dynamic options, // <- this covers any new parameters
   }) async => true;
 
   @override
-  Future<bool> get canCheckBiometrics async => true; // <-- FIXED: Now it's a getter!
+  Future<bool> get canCheckBiometrics async => true;
 
   @override
   Future<bool> isDeviceSupported() async => true;
